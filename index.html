@@ -2,53 +2,130 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel</title>
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
 body {
-    background: #030303;
-    color: white;
-    font-family: Arial;
+    height: 100vh;
+    background: linear-gradient(135deg, #0f2027, #2c5364);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    text-align: center;
 }
 
 .box {
-    background: #111;
-    padding: 30px;
-    border-radius: 15px;
+    width: 90%;
+    max-width: 350px;
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    text-align: center;
+    color: white;
 }
 
-button {
-    padding: 10px 20px;
-    margin: 10px;
+h2 {
+    margin-bottom: 20px;
+}
+
+/* Input group */
+.input-group {
+    position: relative;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    padding-right: 45px;
+    border-radius: 10px;
     border: none;
+    outline: none;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+/* Eye icon */
+.eye {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 18px;
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 10px;
+    transition: 0.3s;
 }
 
-.on { background: green; color: white; }
-.off { background: red; color: white; }
+.login-btn {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+}
+
+.on {
+    background: linear-gradient(45deg, #00ff87, #00c853);
+    color: black;
+}
+
+.off {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.status {
+    margin-top: 15px;
+    font-size: 14px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="box" id="loginBox">
-    <h2>Admin Login</h2>
-    <input type="password" id="pass" placeholder="Enter Password"><br><br>
-    <button onclick="login()">Login</button>
+    <h2>🔐 Admin Login</h2>
+
+    <div class="input-group">
+        <input type="password" id="pass" placeholder="Enter Password">
+        <i class="fa-solid fa-eye eye" id="eyeIcon" onclick="togglePassword()"></i>
+    </div>
+
+    <button class="login-btn" onclick="login()">Login</button>
 </div>
 
 <div class="box" id="panel" style="display:none;">
-    <h2>Status Control</h2>
+    <h2>⚡ Status Control</h2>
     <button class="on" onclick="setOnline()">GO ONLINE</button>
     <button class="off" onclick="setOffline()">GO OFFLINE</button>
+    <div class="status" id="statusText">Status: Unknown</div>
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
@@ -62,8 +139,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// TOGGLE PASSWORD + ICON
+function togglePassword() {
+    const input = document.getElementById("pass");
+    const icon = document.getElementById("eyeIcon");
+
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
+}
+
+// LOGIN
 function login() {
     const pass = document.getElementById("pass").value;
+
     if (pass === "985623147") {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("panel").style.display = "block";
@@ -72,6 +167,7 @@ function login() {
     }
 }
 
+// STATUS
 function setOnline() {
     db.ref("status").set("online");
 }
@@ -79,6 +175,10 @@ function setOnline() {
 function setOffline() {
     db.ref("status").set("offline");
 }
+
+db.ref("status").on("value", (snap) => {
+    document.getElementById("statusText").innerText = "Status: " + snap.val();
+});
 </script>
 
 </body>
