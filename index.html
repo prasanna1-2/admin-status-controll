@@ -9,177 +9,279 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
 }
 
-body {
-    height: 100vh;
-    background: linear-gradient(135deg, #0f2027, #2c5364);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body{
+    height:100vh;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-.box {
-    width: 90%;
-    max-width: 350px;
-    padding: 25px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    text-align: center;
-    color: white;
+/* Glass Box */
+.box{
+    width:90%;
+    max-width:350px;
+    padding:25px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.4);
+    text-align:center;
+    color:white;
+    animation:fadeIn 0.6s ease;
 }
 
-h2 {
-    margin-bottom: 20px;
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-/* Input group */
-.input-group {
-    position: relative;
+h2{
+    margin-bottom:20px;
+    font-size:26px;
 }
 
-input {
-    width: 100%;
-    padding: 12px;
-    padding-right: 45px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    margin-bottom: 15px;
-    background: rgba(255,255,255,0.1);
-    color: white;
+/* Input */
+.input-group{
+    position:relative;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    padding-right:45px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.1);
+    color:white;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+input::placeholder{
+    color:#ddd;
 }
 
 /* Eye icon */
-.eye {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    cursor: pointer;
-    color: #ccc;
-    font-size: 18px;
+.eye{
+    position:absolute;
+    right:15px;
+    top:12px;
+    cursor:pointer;
+    color:#ddd;
+    font-size:18px;
 }
 
 /* Buttons */
-button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-.login-btn {
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
-    color: white;
+button:hover{
+    transform:scale(1.05);
 }
 
-.on {
-    background: linear-gradient(45deg, #00ff87, #00c853);
-    color: black;
+/* Login */
+.login-btn{
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
 }
 
-.off {
-    background: linear-gradient(45deg, #ff416c, #ff4b2b);
-    color: white;
+/* Online */
+.on{
+    background:linear-gradient(45deg,#00ff87,#00c853);
+    color:black;
 }
 
-button:hover {
-    transform: scale(1.05);
+/* Offline */
+.off{
+    background:linear-gradient(45deg,#ff416c,#ff4b2b);
+    color:white;
 }
 
-.status {
-    margin-top: 15px;
-    font-size: 14px;
+/* Logout */
+.logout{
+    background:linear-gradient(45deg,#9c27b0,#673ab7);
+    color:white;
+}
+
+/* Status */
+.status{
+    margin-top:18px;
+    font-size:15px;
+    font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN BOX -->
 <div class="box" id="loginBox">
+
     <h2>🔐 Admin Login</h2>
 
     <div class="input-group">
         <input type="password" id="pass" placeholder="Enter Password">
-        <i class="fa-solid fa-eye eye" id="eyeIcon" onclick="togglePassword()"></i>
+
+        <i class="fa-solid fa-eye eye"
+           id="eyeIcon"
+           onclick="togglePassword()"></i>
     </div>
 
-    <button class="login-btn" onclick="login()">Login</button>
+    <button class="login-btn" onclick="login()">
+        Login
+    </button>
+
 </div>
 
+<!-- ADMIN PANEL -->
 <div class="box" id="panel" style="display:none;">
+
     <h2>⚡ Status Control</h2>
-    <button class="on" onclick="setOnline()">GO ONLINE</button>
-    <button class="off" onclick="setOffline()">GO OFFLINE</button>
-    <div class="status" id="statusText">Status: Unknown</div>
+
+    <button class="on" onclick="setOnline()">
+        🟢 GO ONLINE
+    </button>
+
+    <button class="off" onclick="setOffline()">
+        🔴 GO OFFLINE
+    </button>
+
+    <button class="logout" onclick="logout()">
+        🚪 LOGOUT
+    </button>
+
+    <div class="status" id="statusText">
+        Status: Unknown
+    </div>
+
 </div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBxCJJLsZQtlwPyW3gWvl2dO25-eSpOYEg",
-  databaseURL: "https://ff-tournament-app-abcf0-default-rtdb.firebaseio.com",
-  projectId: "ff-tournament-app-abcf0"
+    apiKey: "AIzaSyBxCJJLsZQtlwPyW3gWvl2dO25-eSpOYEg",
+    databaseURL: "https://ff-tournament-app-abcf0-default-rtdb.firebaseio.com",
+    projectId: "ff-tournament-app-abcf0"
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.database();
 
-// TOGGLE PASSWORD + ICON
-function togglePassword() {
+/* TOGGLE PASSWORD */
+function togglePassword(){
+
     const input = document.getElementById("pass");
     const icon = document.getElementById("eyeIcon");
 
-    if (input.type === "password") {
+    if(input.type === "password"){
+
         input.type = "text";
+
         icon.classList.remove("fa-eye");
         icon.classList.add("fa-eye-slash");
-    } else {
+
+    }else{
+
         input.type = "password";
+
         icon.classList.remove("fa-eye-slash");
         icon.classList.add("fa-eye");
     }
 }
 
-// LOGIN
-function login() {
+/* LOGIN */
+function login(){
+
     const pass = document.getElementById("pass").value;
 
-    if (pass === "985623147") {
+    if(pass === "985623147"){
+
+        // SAVE PASSWORD
+        localStorage.setItem("adminPass", pass);
+
+        // SHOW PANEL
         document.getElementById("loginBox").style.display = "none";
+
         document.getElementById("panel").style.display = "block";
-    } else {
-        alert("Wrong password");
+
+    }else{
+
+        alert("Wrong Password");
     }
 }
 
-// STATUS
-function setOnline() {
+/* AUTO LOGIN */
+window.onload = function(){
+
+    const savedPass = localStorage.getItem("adminPass");
+
+    if(savedPass === "985623147"){
+
+        document.getElementById("loginBox").style.display = "none";
+
+        document.getElementById("panel").style.display = "block";
+    }
+}
+
+/* LOGOUT */
+function logout(){
+
+    localStorage.removeItem("adminPass");
+
+    document.getElementById("panel").style.display = "none";
+
+    document.getElementById("loginBox").style.display = "block";
+
+    document.getElementById("pass").value = "";
+}
+
+/* STATUS */
+function setOnline(){
+
     db.ref("status").set("online");
 }
 
-function setOffline() {
+function setOffline(){
+
     db.ref("status").set("offline");
 }
 
-db.ref("status").on("value", (snap) => {
-    document.getElementById("statusText").innerText = "Status: " + snap.val();
+/* REALTIME STATUS */
+db.ref("status").on("value",(snap)=>{
+
+    document.getElementById("statusText").innerText =
+        "Status: " + snap.val();
 });
 </script>
 
 </body>
-</html>
+    </html>
